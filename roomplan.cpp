@@ -315,7 +315,6 @@ void RoomPlan::deleteSmoke(int x, int y)
             if(smoke->getX() == x && smoke->getY() == y){
                 objects.erase(i);
                 delete smoke;
-                //return;
             }
         }
     }
@@ -364,43 +363,43 @@ int **RoomPlan::getObjectsMatrix()
 
     ObjectOnRoomPlan* obj;
     for (std::list<ObjectOnRoomPlan* >::iterator i = objects.begin(); i != objects.end(); i++){
-        // Огонь 3
+        // Огонь
         if((obj = dynamic_cast<Fire *>(*(i)))){
-            if(arr[obj->getX() / CELL_WIDTH][obj->getY() / CELL_WIDTH] == 0){
-               arr[obj->getX() / CELL_WIDTH][obj->getY() / CELL_WIDTH] = 3;
+            if(arr[obj->getX() / CELL_WIDTH][obj->getY() / CELL_WIDTH] == EMPTY){
+               arr[obj->getX() / CELL_WIDTH][obj->getY() / CELL_WIDTH] = FIRE;
             }
         }     
         // Дым 5
         else if((obj = dynamic_cast<Smoke *>(*(i)))){
-            if(arr[obj->getX() / CELL_WIDTH][obj->getY() / CELL_WIDTH] == 0){
-               arr[obj->getX() / CELL_WIDTH][obj->getY() / CELL_WIDTH] = 5;
+            if(arr[obj->getX() / CELL_WIDTH][obj->getY() / CELL_WIDTH] == EMPTY){
+               arr[obj->getX() / CELL_WIDTH][obj->getY() / CELL_WIDTH] = SMOKE;
             }
         }
         // Кнопка тревоги 6
         else if((obj = dynamic_cast<EvacuationButton *>(*(i)))){
-            if(arr[obj->getX() / CELL_WIDTH][obj->getY() / CELL_WIDTH] != 4){
-               arr[obj->getX() / CELL_WIDTH][obj->getY() / CELL_WIDTH] = 6;
+            if(arr[obj->getX() / CELL_WIDTH][obj->getY() / CELL_WIDTH] != HUMAN){
+               arr[obj->getX() / CELL_WIDTH][obj->getY() / CELL_WIDTH] = EVACUATION_BUT;
             }
         }
         // Табличка выход 7
         else if((obj = dynamic_cast<ExitPointer *>(*(i)))){
-            if(arr[obj->getX() / CELL_WIDTH][obj->getY() / CELL_WIDTH] != 4){
-               arr[obj->getX() / CELL_WIDTH][obj->getY() / CELL_WIDTH] = 7;
+            if(arr[obj->getX() / CELL_WIDTH][obj->getY() / CELL_WIDTH] != HUMAN){
+               arr[obj->getX() / CELL_WIDTH][obj->getY() / CELL_WIDTH] = EXIT_POINTER;
             }
         }
         // Огнетушитель 8
         else if((obj = dynamic_cast<FireExtinguisher *>(*(i)))){
-            if(arr[obj->getX() / CELL_WIDTH][obj->getY() / CELL_WIDTH] != 4){
-               arr[obj->getX() / CELL_WIDTH][obj->getY() / CELL_WIDTH] = 8;
+            if(arr[obj->getX() / CELL_WIDTH][obj->getY() / CELL_WIDTH] != HUMAN){
+               arr[obj->getX() / CELL_WIDTH][obj->getY() / CELL_WIDTH] = FIREEXTINGUISHER;
             }
         }
         // Человек 4
         else if(Human* h = dynamic_cast<Human *>(*(i))){
-            if(h->isDead() && arr[h->getX() / CELL_WIDTH][h->getY() / CELL_WIDTH] != 4)
-                arr[h->getX() / CELL_WIDTH][h->getY() / CELL_WIDTH] = -4;
+            if(h->isDead() && arr[h->getX() / CELL_WIDTH][h->getY() / CELL_WIDTH] != HUMAN)
+                arr[h->getX() / CELL_WIDTH][h->getY() / CELL_WIDTH] = DEAD_HUMAN;
 
             else {
-                arr[h->getX() / CELL_WIDTH][h->getY() / CELL_WIDTH] = 4;
+                arr[h->getX() / CELL_WIDTH][h->getY() / CELL_WIDTH] = HUMAN;
             }
         }
     }
@@ -430,7 +429,7 @@ void RoomPlan::generateEvacuationButtons(int count)
                  r = x / CELL_WIDTH + directionRow[i];
                  c = y / CELL_WIDTH + directionCol[i];
 
-                 if (room[r][c] == 1) {
+                 if (room[r][c] == WALL) {
                      addObject(new EvacuationButton(x, y, this));
                      k++;
                      break;
@@ -461,7 +460,7 @@ void RoomPlan::generateExitPointers(int count)
                  r = x / CELL_WIDTH + directionRow[i];
                  c = y / CELL_WIDTH + directionCol[i];
 
-                 if (room[r][c] == 1) {
+                 if (room[r][c] == WALL) {
                      addObject(new ExitPointer(x, y, this));
                      counter++;
                      break;
@@ -494,7 +493,7 @@ void RoomPlan::setExitCoordinate()
     int widthLength = width / CELL_WIDTH;
 
     for (int i = 0; i < widthLength; i++) {
-        if(room[i][0] == 2){
+        if(room[i][0] == EXIT){
             exitCoordinateX = i * CELL_WIDTH;
             exitCoordinateY = CELL_WIDTH;
             return;
@@ -502,7 +501,7 @@ void RoomPlan::setExitCoordinate()
     }
 
     for (int i = 0; i < widthLength; i++) {
-        if(room[i][widthLength - 1] == 2){
+        if(room[i][widthLength - 1] == EXIT){
             exitCoordinateX = i * CELL_WIDTH;
             exitCoordinateY = (widthLength - 2) * CELL_WIDTH;
             return;
@@ -512,7 +511,7 @@ void RoomPlan::setExitCoordinate()
     int heightLength = height / CELL_WIDTH;
 
     for (int i = 0; i < widthLength; i++) {
-        if(room[0][i] == 2){
+        if(room[0][i] == EXIT){
             exitCoordinateX = CELL_WIDTH;
             exitCoordinateY = i * CELL_WIDTH;
             return;
@@ -520,7 +519,7 @@ void RoomPlan::setExitCoordinate()
     }
 
     for (int i = 0; i < widthLength; i++) {
-        if(room[heightLength - 1][i] == 2){
+        if(room[heightLength - 1][i] == EXIT){
             exitCoordinateX = (heightLength - 2) * CELL_WIDTH;
             exitCoordinateY = i * CELL_WIDTH;
             return;
@@ -542,7 +541,7 @@ bool RoomPlan::isBehindWall(ObjectOnRoomPlan *a, ObjectOnRoomPlan *b)
     x = x > 0 ? 1 : x < 0 ? -1 : 0;
     y = y > 0 ? 1 : y < 0 ? -1 : 0;
 
-    if(room[a->getX() / CELL_WIDTH + x][a->getY() / CELL_WIDTH + y] == 1){
+    if(room[a->getX() / CELL_WIDTH + x][a->getY() / CELL_WIDTH + y] == WALL){
         return true;
     }
 

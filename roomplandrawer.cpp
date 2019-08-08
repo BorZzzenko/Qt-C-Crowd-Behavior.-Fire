@@ -51,65 +51,65 @@ void RoomPlanDrawer::paintEvent(QPaintEvent */*event*/)
 
     for (int i = 0; i < width; i++) {
         for (int j = 0; j < height; j++) {
-            // Стена 1
-            if(walls[i][j] == 1){
+            // Стена
+            if(walls[i][j] == WALL){
                 painter.setPen(Qt::white);
                 painter.setBrush(QColor(1, 1, 1));
 
                 painter.drawRect(i * CELL_WIDTH, j * CELL_WIDTH, CELL_WIDTH, CELL_WIDTH);
             }
-            // Выход 2
-            else if(walls[i][j] == 2){
+            // Выход
+            else if(walls[i][j] == EXIT){
                 painter.setPen(Qt::white);
                 painter.setBrush(QBrush(Qt::black, Qt::BDiagPattern));
 
                 painter.drawRect(i * CELL_WIDTH, j * CELL_WIDTH, CELL_WIDTH, CELL_WIDTH);
             }
-            // Человек 4
-            else if(walls[i][j] == 4){
+            // Человек
+            else if(walls[i][j] == HUMAN){
                 painter.setPen(QColor(222, 184, 135));
                 painter.setBrush(QColor(222, 184, 135));
 
                 painter.drawRect(i * CELL_WIDTH, j * CELL_WIDTH, CELL_WIDTH, CELL_WIDTH);
             }
-            // Мертвый человек -4
-            else if(walls[i][j] == -4){
+            // Мертвый человек
+            else if(walls[i][j] == DEAD_HUMAN){
                 painter.setPen(QColor(139, 0, 0));
                 painter.setBrush(QColor(139, 0, 0));
 
                 painter.drawRect(i * CELL_WIDTH, j * CELL_WIDTH, CELL_WIDTH, CELL_WIDTH);
             }
-            // Огонь 3
-            else if(walls[i][j] == 3){
+            // Огонь
+            else if(walls[i][j] == FIRE){
                 painter.setPen(Qt::white);
                 painter.setBrush(QBrush(QColor(255, 140, 0), Qt::DiagCrossPattern));
 
                 painter.drawRect(i * CELL_WIDTH, j * CELL_WIDTH, CELL_WIDTH, CELL_WIDTH);
             }
 
-            // Дым 5
-            else if(walls[i][j] == 5){
+            // Дым
+            else if(walls[i][j] == SMOKE){
                 painter.setPen(Qt::white);
                 painter.setBrush(QBrush(QColor(169, 169, 169), Qt::Dense5Pattern));
 
                 painter.drawRect(i * CELL_WIDTH, j * CELL_WIDTH, CELL_WIDTH, CELL_WIDTH);
             }
-            // Кнопка 6
-            else if(walls[i][j] == 6){
+            // Кнопка
+            else if(walls[i][j] == EVACUATION_BUT){
                 painter.setPen(QColor(255, 130, 130));
                 painter.setBrush(QBrush(QColor(255, 130, 130), Qt::Dense3Pattern));
 
                 painter.drawRect(i * CELL_WIDTH, j * CELL_WIDTH, CELL_WIDTH, CELL_WIDTH);
             }
-            // Указатель 7
-            else if(walls[i][j] == 7){
+            // Указатель
+            else if(walls[i][j] == EXIT_POINTER){
                 painter.setPen(QColor(0, 250, 154));
                 painter.setBrush(QColor(0, 250, 154));
 
                 painter.drawRect(i * CELL_WIDTH, j * CELL_WIDTH, CELL_WIDTH, CELL_WIDTH);
             }
             // Огнетушитель
-            else if(walls[i][j] == 8){
+            else if(walls[i][j] == FIREEXTINGUISHER){
                 painter.setPen(QColor(220, 20, 80));
                 painter.setBrush(QColor(220, 20, 80));
 

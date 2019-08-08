@@ -18,6 +18,19 @@ private:
     // Ширина клетки
     const int CELL_WIDTH = 10;
 
+    enum objOnRoomPlan {
+        EMPTY = 0,
+        WALL = 1,
+        EXIT = 2,
+        FIRE = 3,
+        HUMAN = 4,
+        DEAD_HUMAN = -4,
+        SMOKE = 5,
+        EVACUATION_BUT = 6,
+        EXIT_POINTER = 7,
+        FIREEXTINGUISHER = 8
+    };
+
 public:
     // Конструктор
     // parent - форма
