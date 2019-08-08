@@ -10,7 +10,7 @@ Human::Human(int x, int y, RoomPlan* roomPlan): ObjectOnRoomPlan (x, y, roomPlan
     isKnowsExitWay = false;
     isHaveFireExtinguisher = false;
 
-    visitTime = 0;
+    visitTime = rand() % 100 + 5;
     smokeHealthPoint = 50;
     fireHelathPoint = 10;
 
@@ -44,7 +44,7 @@ void Human::step()
     }
 
     // Выход
-    if(x == roomPlan->getExitX() && y == roomPlan->getExitY() && (visitTime > 150 || isPanic)){
+    if(x == roomPlan->getExitX() && y == roomPlan->getExitY() && (visitTime == 0 || isPanic)){
         leave();
         return;
     }
@@ -149,7 +149,7 @@ void Human::step()
             goPath();
     }
     // Иначе, если долго в помещении или паникует, то идет к выходу
-    else if (visitTime >= 150 || isPanic){
+    else if (visitTime == 0 || isPanic){
         resetPath();
         if(!findPathBfs(roomPlan->getExitX(), roomPlan->getExitY())){
             findPathBfsInFire(roomPlan->getExitX(), roomPlan->getExitY());
@@ -165,7 +165,7 @@ void Human::step()
         fireExtinguisher->step();
     }
 
-    visitTime++;
+    visitTime--;
 }
 
 void Human::goRandomPath()
