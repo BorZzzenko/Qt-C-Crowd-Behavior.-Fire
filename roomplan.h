@@ -13,6 +13,8 @@ class RoomPlan
 private:   
     // Ширина клетки
     const int CELL_WIDTH = 10;
+    // Максимальное количество людей в комнате
+    const int MAX_HUMAN = 5;
 
     // Ширина план помещения
     int width;
@@ -71,6 +73,9 @@ public:
     int getHeight();
     // Возвращает ширину клетки
     int getCellWidth();
+
+    // Возвращает максимальное количество людей в комнате
+    int getMaxHumanInRoom();
 
     // Возвращают координаты выхода
     int getExitX();

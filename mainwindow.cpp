@@ -70,7 +70,7 @@ void MainWindow::stepModel()
     }
 
     // Случайное добавление человека
-    if(roomPlan->getPeopleCount() < 5){
+    if(roomPlan->getPeopleCount() < roomPlan->getMaxHumanInRoom()){
         int chance = rand() % 100;
         if(chance >= 95){
            roomPlan->addHuman();

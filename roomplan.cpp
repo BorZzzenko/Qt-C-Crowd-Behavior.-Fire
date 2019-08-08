@@ -62,6 +62,11 @@ int RoomPlan::getCellWidth()
     return CELL_WIDTH;
 }
 
+int RoomPlan::getMaxHumanInRoom()
+{
+    return MAX_HUMAN;
+}
+
 int RoomPlan::getExitX()
 {
     return exitCoordinateX;
